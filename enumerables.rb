@@ -99,5 +99,7 @@ module Enumerable
 end
 
 def multiply_els(array)
-    puts array.my_inject { |num, i| num * i }
+    puts array.my_inject(:*)
 end
+
+# rubocop:enable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity,Metrics/ModuleLength,Metrics/MethodLength
