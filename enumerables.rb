@@ -1,25 +1,28 @@
 module Enumerable
   def my_each
-    return unless block_given?
+    return to_enum(:my_each) unless block_given?
 
-    while i <= length - 1
-      yield i
+    i = 0
+    while i <= size - 1
+      yield self[i]
       i += 1
     end
+    self
   end
 
   def my_each_with_index
-    return unless block_given?
+    return to_enum(:my_each_with_index) unless block_given?
 
     i = 0
-    while i <= length - 1
-      yield(self[i], i)
+    while i <= size - 1
+      yield(to_a[i], i)
       i += 1
     end
+    self
   end
 
   def my_select
-    return unless block_given?
+    return to_enum(:my_select) unless block_given?
 
     array = []
     to_a.my_each { |item| array << item if yield item }
@@ -80,7 +83,7 @@ module Enumerable
   end
 
   def my_map(param = nil)
-    return unless block_given?
+    return to_enum(:my_map) unless block_given?
 
     new_array = []
     if param.nil?
