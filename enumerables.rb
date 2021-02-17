@@ -1,3 +1,5 @@
+# rubocop:disable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity,Metrics/ModuleLength,Metrics/MethodLength
+
 module Enumerable
     def my_each
         return unless block_given?
