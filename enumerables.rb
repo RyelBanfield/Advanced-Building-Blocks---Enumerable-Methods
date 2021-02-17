@@ -18,15 +18,14 @@ module Enumerable
     end
   end
 
-  # rubocop: disable Style/ExplicitBlockArgument
-
   def my_select
     return unless block_given?
 
-    my_each { |i| yield i }
+    array = []
+    to_a.my_each { |item| array << item if yield item }
+    array
   end
 
-  # rubocop: enable Style/ExplicitBlockArgument
   # rubocop:disable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity/
 
   def my_all?(param = nil)
