@@ -59,4 +59,26 @@ module Enumerable
         true
     end
 
+    def my_count(param = nil)
+        count = 0
+        if block_given?
+          my_each { |item| count += 1 if yield(item) }
+        elsif !param.nil?
+          my_each { |item| count +=1 if item == param}
+        else
+          count = length
+        end
+        count
+      end
+      def my_map(param = nil)
+        return unless block_given?
+        new_array = []
+        if param.nil?
+          my_each { |item| new_array.push(yield(item)) }
+        else
+          my_each { |item| new_array.push(param.call(item)) }
+        end
+        new_array
+      end
+
 end
