@@ -62,23 +62,40 @@ module Enumerable
     def my_count(param = nil)
         count = 0
         if block_given?
-          my_each { |item| count += 1 if yield(item) }
+            my_each { |item| count += 1 if yield(item) }
         elsif !param.nil?
-          my_each { |item| count +=1 if item == param}
+            my_each { |item| count +=1 if item == param}
         else
-          count = length
+            count = length
         end
         count
-      end
-      def my_map(param = nil)
+    end
+
+    def my_map(param = nil)
         return unless block_given?
         new_array = []
         if param.nil?
-          my_each { |item| new_array.push(yield(item)) }
+            my_each { |item| new_array.push(yield(item)) }
         else
-          my_each { |item| new_array.push(param.call(item)) }
+            my_each { |item| new_array.push(param.call(item)) }
         end
         new_array
-      end
+    end
 
+    def my_inject(*args)
+        array = is_a?(Range) ? to_a : self
+        first_args = args[0] if args[0].is_a?(Integer)
+        operator = args[0].is_a?(Symbol) ? args[0] : args[1]
+    
+        if operator
+            my_each { |item| first_args = first_args ? first_args.send(operator, item) : item }
+            return first_args
+        end
+        my_each { |item| first_args = first_args ? yield(first_args, item) : item }
+    end
+
+end
+
+def multiply_els(array)
+    puts array.my_inject { |num, i| num * i }
 end
