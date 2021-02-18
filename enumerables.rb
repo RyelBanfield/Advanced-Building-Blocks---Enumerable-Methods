@@ -1,4 +1,5 @@
 module Enumerable
+  # rubocop:disable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity,Style/For,IdenticalConditionalBranches/
   def my_each
     return to_enum(:my_each) unless block_given?
 
@@ -26,8 +27,6 @@ module Enumerable
     array
   end
 
-  # rubocop:disable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity/
-
   def my_all?(param = nil)
     if block_given?
       my_each { |item| return false if yield(item) == false }
@@ -53,22 +52,17 @@ module Enumerable
     elsif param.is_a? Class
       my_each { |item| return true if [item.class, item.class.superclass].include?(param) }
     else
-      my_each { |item| return false if item != param }
+      my_each { |item| return true if item == param }
     end
     false
   end
 
   def my_none?(param = nil)
     if block_given?
-      my_each { |item| return false if yield(item) == true }
-    elsif param.nil?
-      my_each { |item| return false if item }
-    elsif param.instance_of?(Regexp)
-      my_each { |item| return true unless param.match(item) }
-    elsif param.is_a? Class
-      my_each { |item| return false unless [item.class, item.class.superclass].include?(param) }
+      !my_any?(param)
+    else
+      !my_any?(param)
     end
-    true
   end
 
   def my_count(param = nil)
@@ -78,7 +72,7 @@ module Enumerable
     elsif !param.nil?
       my_each { |item| count += 1 if item == param }
     else
-      count = length
+      count = size
     end
     count
   end
@@ -95,33 +89,23 @@ module Enumerable
     new_array
   end
 
-  def my_inject(*arg)
-    return to_enum if !block_given? && arg == nil?
+  def my_inject(*args)
+    is_a?(Range) ? to_a : self
 
-    control = false
-    result = Array(self)[0]
-    if (arg[0].class.instance_of? Symbol) || arg[0].nil?
-      control = true
-    elsif arg[0].is_a? Numeric
-      result = arg[0]
-    end
-    Array(self).my_each_with_index do |item, index|
-      next if control && index.zero?
+    reduce = args[0] if args[0].is_a?(Integer)
+    method = args[0].is_a?(Symbol) ? args[0] : args[1]
 
-      if block_given?
-        result = yield(result, item)
-      elsif arg[0].is_a? Symbol
-        result = result.send(arg[0], item)
-      elsif arg[0].is_a? Numeric
-        result = result.send(arg[1], item)
-      end
+    if method
+      my_each { |item| reduce = reduce ? reduce.send(method, item) : item }
+      return reduce
     end
-    result
+    my_each { |item| reduce = reduce ? yield(reduce, item) : item }
+    reduce
   end
 end
 
 def multiply_els(array)
-  puts array.my_inject(:*)
+  array.my_inject(:*)
 end
 
-# rubocop:enable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity
+# rubocop:enable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity,Style/For,IdenticalConditionalBranches/
