@@ -38,7 +38,7 @@ module Enumerable
     elsif param.is_a? Class
       my_each { |item| return false unless [item.class, item.class.superclass].include?(param) }
     else
-      to_a.my_each { |item| return false if item != param }
+      my_each { |item| return false if item != param }
     end
     true
   end
@@ -47,11 +47,13 @@ module Enumerable
     if block_given?
       my_each { |item| return true if yield(item) == true }
     elsif param.nil?
-      my_each { |item| return true if item.nil? || item == true }
+      my_each { |item| return true if item }
     elsif param.instance_of?(Regexp)
       my_each { |item| return true if param.match(item) }
     elsif param.is_a? Class
       my_each { |item| return true if [item.class, item.class.superclass].include?(param) }
+    else
+      my_each { |item| return false if item != param }
     end
     false
   end
@@ -93,16 +95,28 @@ module Enumerable
     new_array
   end
 
-  def my_inject(*args)
-    is_a?(Range) ? to_a : self
-    first_args = args[0] if args[0].is_a?(Integer)
-    operator = args[0].is_a?(Symbol) ? args[0] : args[1]
+  def my_inject(*arg)
+    return to_enum if !block_given? && arg == nil?
 
-    if operator
-      my_each { |item| first_args = first_args ? first_args.send(operator, item) : item }
-      return first_args
+    control = false
+    result = Array(self)[0]
+    if (arg[0].class.instance_of? Symbol) || arg[0].nil?
+      control = true
+    elsif arg[0].is_a? Numeric
+      result = arg[0]
     end
-    my_each { |item| first_args = first_args ? yield(first_args, item) : item }
+    Array(self).my_each_with_index do |item, index|
+      next if control && index.zero?
+
+      if block_given?
+        result = yield(result, item)
+      elsif arg[0].is_a? Symbol
+        result = result.send(arg[0], item)
+      elsif arg[0].is_a? Numeric
+        result = result.send(arg[1], item)
+      end
+    end
+    result
   end
 end
 
