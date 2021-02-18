@@ -2,12 +2,9 @@ module Enumerable
   def my_each
     return to_enum(:my_each) unless block_given?
 
-    i = 0
-    while i <= size - 1
-      yield self[i]
-      i += 1
+    for i in self do
+      yield i
     end
-    self
   end
 
   def my_each_with_index
@@ -40,6 +37,8 @@ module Enumerable
       my_each { |item| return false unless param.match(item) }
     elsif param.is_a? Class
       my_each { |item| return false unless [item.class, item.class.superclass].include?(param) }
+    else
+      to_a.my_each { |item| return false if item != param }
     end
     true
   end
