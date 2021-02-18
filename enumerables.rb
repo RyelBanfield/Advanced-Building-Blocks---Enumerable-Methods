@@ -1,5 +1,5 @@
 module Enumerable
-  # rubocop:disable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity,Style/For,IdenticalConditionalBranches/
+  # rubocop:disable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity,Style/For/
   def my_each
     return to_enum(:my_each) unless block_given?
 
@@ -59,10 +59,17 @@ module Enumerable
 
   def my_none?(param = nil)
     if block_given?
-      !my_any?(param)
+      my_each { |item| return false if yield(item) == true }
+    elsif param.nil?
+      my_each { |item| return false if item }
+    elsif param.instance_of?(Regexp)
+      my_each { |item| return false if param.match(item) }
+    elsif param.is_a? Class
+      my_each { |item| return false if [item.class, item.class.superclass].include?(param) }
     else
-      !my_any?(param)
+      my_each { |item| return false if item == param }
     end
+    false
   end
 
   def my_count(param = nil)
@@ -108,4 +115,4 @@ def multiply_els(array)
   array.my_inject(:*)
 end
 
-# rubocop:enable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity,Style/For,IdenticalConditionalBranches/
+# rubocop:enable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity,Style/For/
