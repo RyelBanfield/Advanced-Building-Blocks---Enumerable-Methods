@@ -69,7 +69,7 @@ module Enumerable
     else
       my_each { |item| return false if item == param }
     end
-    false
+    true
   end
 
   def my_count(param = nil)
