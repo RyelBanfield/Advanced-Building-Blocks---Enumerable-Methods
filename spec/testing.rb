@@ -49,25 +49,28 @@ describe Enumerable do
       expect(num_arr.my_none? { |item| item.is_a? String }).to be true
     end
   end
+
   describe 'my_count' do
     it 'returns the number of items' do
       expect(num_arr.my_count).to eql(5)
     end
   end
+
   describe 'my_map' do
     it 'returns the modified array' do
       expect(num_arr.my_map { 1 }).to eql([1, 1, 1, 1, 1])
     end
   end
+
   describe 'my_inject' do
     it 'returns the total sum of each array item' do
       expect(num_arr.my_inject { |sum, item| sum + item }).to eql(15)
     end
   end
+  
   describe '#multiply_els' do
     it 'returns the mulitple of each item in array' do
       expect(multiply_els([1, 2, 3, 4, 5])).to eql(120)
     end
   end
-  
 end
