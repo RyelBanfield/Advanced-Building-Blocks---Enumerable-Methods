@@ -67,7 +67,7 @@ describe Enumerable do
       expect(num_arr.my_inject { |sum, item| sum + item }).to eql(15)
     end
   end
-  
+
   describe '#multiply_els' do
     it 'returns the mulitple of each item in array' do
       expect(multiply_els([1, 2, 3, 4, 5])).to eql(120)
