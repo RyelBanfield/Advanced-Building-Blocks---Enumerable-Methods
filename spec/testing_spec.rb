@@ -5,19 +5,28 @@ describe Enumerable do
 
   describe 'my_each' do
     it 'calls the block on each item of array' do
-      expect(num_arr.my_each { |item| }).to eql([1, 2, 3, 4, 5])
+      expect(num_arr.my_each { |item| item }).to eql([1, 2, 3, 4, 5])
+    end
+    it 'calls the block on each item of array' do
+      expect(num_arr.my_each { |item| item }).not_to eql([2, 3, 4, 5, 6])
     end
   end
 
   describe 'my_each_with_index' do
     it 'returns array element with the index' do
-      expect(num_arr.my_each_with_index { |item| }).to eql(num_arr)
+      expect(num_arr.my_each_with_index { |item| item }).to eql(num_arr)
+    end
+    it 'returns array element with the index' do
+      expect(num_arr.my_each_with_index { |item| item }).not_to eql(5)
     end
   end
 
   describe 'my_select' do
     it 'returns only the selected items' do
       expect(num_arr.my_select { |item| item != 5 }).to eql([1, 2, 3, 4])
+    end
+    it 'returns only the selected items' do
+      expect(num_arr.my_select { |item| item != 5 }).not_to eql([1, 2, 3, 4, 5])
     end
   end
 
@@ -54,17 +63,26 @@ describe Enumerable do
     it 'returns the number of items' do
       expect(num_arr.my_count).to eql(5)
     end
+    it 'returns the number of items' do
+      expect(num_arr.my_count).not_to eql(6)
+    end
   end
 
   describe 'my_map' do
     it 'returns the modified array' do
       expect(num_arr.my_map { 1 }).to eql([1, 1, 1, 1, 1])
     end
+    it 'returns the modified array' do
+      expect(num_arr.my_map { 1 }).not_to eql([5])
+    end
   end
 
   describe 'my_inject' do
     it 'returns the total sum of each array item' do
       expect(num_arr.my_inject { |sum, item| sum + item }).to eql(15)
+    end
+    it 'returns the total sum of each array item' do
+      expect(num_arr.my_inject { |sum, item| sum + item }).not_to eql(20)
     end
   end
 
