@@ -1,5 +1,5 @@
 module Enumerable
-  # rubocop:disable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity,Style/For/
+  # rubocop:disable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity,Style/For,Lint/ToEnumArguments/
   def my_each
     return to_enum(:my_each) unless block_given?
 
@@ -115,4 +115,4 @@ def multiply_els(array)
   array.my_inject(:*)
 end
 
-# rubocop:enable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity,Style/For/
+# rubocop:enable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity,Style/For,Lint/ToEnumArguments/

@@ -1,6 +1,6 @@
 ![](https://img.shields.io/badge/Microverse-blueviolet)
 
-# Advanced Building Blocks - Enumerable Methods
+# Advanced Building Blocks - Enumerable Methods TESTING WITH RSPEC
 
 > A Microverse project about enumerables.
 
@@ -21,10 +21,11 @@ Additional description about the project and its features.
 - Twitter: [@RyelBanfield](https://twitter.com/RyelBanfield)
 - LinkedIn: [RyelBanfield](https://www.linkedin.com/in/ryel-banfield-93a6a71b4/)
 
-👤 **Mert Gündüz**
+👤 **Author2**
 
-- GitHub: [@Mert Gündüz](https://github.com/mgunduz1)
-- LinkedIn: [Mert Gündüz](https://www.linkedin.com/in/mert-gunduz-875280202/)
+- GitHub: [@Arinpe](https://github.com/Arinpe)
+- LinkedIn: [Adesuyi Adetola](https://www.linkedin.com/in/adesuyi-adetola-7b4451111/)
+- Twitter: [@_detola_](https://twitter.com/_detola_)
 
 ## Show your support!
 
